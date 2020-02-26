@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -7,17 +8,22 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
-import {getPrimeNumbers} from './lib/primes';
+import {RootStateT} from '../reducers';
 
+interface RowT {
+  dec: number,
+  base13: string,
+}
 
-function createData(dec: number) {
+function toBase13Pair(dec: number): RowT {
   const base13 = dec.toString(13)
   return { dec, base13 };
 }
 
-const rows = getPrimeNumbers(6).map(createData);
+function OutputTable({primeSet}: any) {
 
-export default function OutputTable() {
+  const rows = primeSet.map(toBase13Pair)
+
   return (
     <TableContainer component={Paper}>
       <Table aria-label="prime number table">
@@ -28,7 +34,7 @@ export default function OutputTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map(row => (
+          {rows.map((row: RowT) => (
             <TableRow key={row.dec}>
               <TableCell component="th" scope="row">
                 {row.dec}
@@ -41,3 +47,12 @@ export default function OutputTable() {
     </TableContainer>
   );
 }
+
+const mapStateToProps = (state: RootStateT) => ({
+  primeSet: state.primes.primeSet,
+})
+
+const mapDispatchToProps = (dispatch: Function) => ({})
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(OutputTable);
