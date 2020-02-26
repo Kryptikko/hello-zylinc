@@ -1,21 +1,18 @@
 import React, {ChangeEvent, FocusEvent} from 'react';
-import {connect} from 'react-redux';
+import {connect, ConnectedProps} from 'react-redux';
 import TextField from '@material-ui/core/TextField';
+
 import {RootStateT} from '../reducers';
 import {setPrimeCount} from '../actions/primes';
 
+type PropsFromRedux = ConnectedProps<typeof connector>
 
-interface PrimeInputPropT {
-  count: number;
-  error: [];
-  onChange: Function;
-}
-
-function onFocus(ev: FocusEvent<HTMLInputElement>) {
+function _onFocus(ev: FocusEvent<HTMLInputElement>) {
   ev.target.select()
 }
 
-function PrimeInput({count, error, onChange}: any) {
+
+function PrimeInput({count, error, onChange}: PropsFromRedux) {
   let exception = {}
   if (Boolean(error)) {
     exception = {
@@ -30,11 +27,12 @@ function PrimeInput({count, error, onChange}: any) {
       variant="outlined"
       value={count}
       onChange={onChange}
-      onFocus={onFocus}
+      onFocus={_onFocus}
       {...exception}
     />
   );
 }
+
 
 const mapStateToProps = (state: RootStateT) => ({
   count: state.primes.count,
@@ -45,5 +43,5 @@ const mapDispatchToProps = (dispatch: Function) => ({
   onChange: (ev: ChangeEvent<HTMLInputElement>) => dispatch(setPrimeCount(ev.target.value))
 })
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(PrimeInput);
+const connector = connect(mapStateToProps, mapDispatchToProps)
+export default connector(PrimeInput);

@@ -1,5 +1,5 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import {connect, ConnectedProps} from 'react-redux';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -15,14 +15,17 @@ interface RowT {
   base13: string,
 }
 
-function toBase13Pair(dec: number): RowT {
+type PropsFromRedux = ConnectedProps<typeof connector>
+
+
+function _toBase13Pair(dec: number): RowT {
   const base13 = dec.toString(13)
   return { dec, base13 };
 }
 
-function OutputTable({primeSet}: any) {
+function OutputTable({primeSet}: PropsFromRedux) {
 
-  const rows = primeSet.map(toBase13Pair)
+  const rows = primeSet.map(_toBase13Pair)
 
   return (
     <TableContainer component={Paper}>
@@ -48,11 +51,12 @@ function OutputTable({primeSet}: any) {
   );
 }
 
+
 const mapStateToProps = (state: RootStateT) => ({
   primeSet: state.primes.primeSet,
 })
 
 const mapDispatchToProps = (dispatch: Function) => ({})
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(OutputTable);
+const connector = connect(mapStateToProps, mapDispatchToProps);
+export default connector(OutputTable);
