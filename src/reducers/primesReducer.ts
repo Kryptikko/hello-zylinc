@@ -9,10 +9,11 @@ const defaultState: PrimeStateT = {
 }
 
 function primesReducer(state = defaultState, action: PrimesActionT): PrimeStateT {
+  let error, count;
   switch (action.type) {
     case SET_PRIME_COUNT:
-      let error = [];
-      const count = Number(action.payload);
+      error = [];
+      count = Number(action.payload);
       if (isNaN(count)) {
         error.push("Decimal numbers only");
       }

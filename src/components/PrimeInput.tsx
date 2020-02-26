@@ -14,7 +14,7 @@ function _onFocus(ev: FocusEvent<HTMLInputElement>) {
 
 function PrimeInput({count, error, onChange}: PropsFromRedux) {
   let exception = {}
-  if (Boolean(error)) {
+  if (error) {
     exception = {
       helperText: error.join(" "),
       error: true

@@ -56,7 +56,7 @@ const mapStateToProps = (state: RootStateT) => ({
   primeSet: state.primes.primeSet,
 })
 
-const mapDispatchToProps = (dispatch: Function) => ({})
+const mapDispatchToProps = () => ({})
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 export default connector(OutputTable);
