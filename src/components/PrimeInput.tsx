@@ -1,4 +1,4 @@
-import React, {ChangeEvent} from 'react';
+import React, {ChangeEvent, FocusEvent} from 'react';
 import {connect} from 'react-redux';
 import TextField from '@material-ui/core/TextField';
 import {RootStateT} from '../reducers';
@@ -9,6 +9,10 @@ interface PrimeInputPropT {
   count: number;
   error: [];
   onChange: Function;
+}
+
+function onFocus(ev: FocusEvent<HTMLInputElement>) {
+  ev.target.select()
 }
 
 function PrimeInput({count, error, onChange}: any) {
@@ -26,6 +30,7 @@ function PrimeInput({count, error, onChange}: any) {
       variant="outlined"
       value={count}
       onChange={onChange}
+      onFocus={onFocus}
       {...exception}
     />
   );
